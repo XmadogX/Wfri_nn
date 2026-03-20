@@ -6,7 +6,6 @@ export const performTest = (
   modifier: number = 0,
   forcedRoll?: number // Добавляем этот параметр
 ) => {
-  console.log(char, statKey, modifier, forcedRoll);
   
   const stat = char.stats[statKey];
   

@@ -11,6 +11,19 @@ const ALL_SKILLS_LIBRARY = [
   { name: 'Стойкость', stat: 'T' }, { name: 'Рукопашная (Базовая)', stat: 'WS' }
 ];
 
+const STATS_TRANSLATE = {
+  WS: 'Бл.бой',   // Weapon Skill
+  BS: 'Стрельба', // Ballistic Skill
+  S: 'Сила',      // Strength
+  T: 'Стойкость', // Toughness
+  I: 'Иниц.',     // Initiative
+  Ag: 'Ловк.',    // Agility
+  Dex: 'Сноровка', // Dexterity
+  Int: 'Интел.',  // Intelligence
+  WP: 'Сил.воли', // Willpower
+  Fel: 'Общит.'   // Fellowship
+};
+
 // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
 const getAdvanceCost = (current: number, isStat: boolean) => {
   const next = current + 1;
@@ -66,11 +79,9 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
 
   // --- ЛОГИКА ТЕСТА ---
   const onTest = (key: string, baseStat: StatName, skillAdv: number = 0, isWeapon: boolean = false, weaponDmg: string = "0") => {
-    console.log(key, baseStat, skillAdv, isWeapon, weaponDmg);
     
     const rollValue = manualRoll ? parseInt(manualRoll) : Math.floor(Math.random() * 100) + 1;
     const res = performTest(char, baseStat, skillAdv, rollValue);
-    console.log();
     
     let finalSl = res.sl;
     let finalTarget = res.target;
@@ -146,7 +157,7 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
             {Object.entries(char.stats).map(([key, val]) => (
               <div key={key} className="flex justify-between items-center bg-white/5 p-3 rounded-2xl border border-slate-700/20 shadow-sm group">
                 <div className="flex flex-col">
-                  <span className="text-[9px] font-black opacity-30 uppercase tracking-widest">{key}</span>
+                  <span className="text-[9px] font-black opacity-30 uppercase tracking-widest">{STATS_TRANSLATE[key] || key}</span>
                   <div className="flex items-baseline gap-1">
                     <span className="text-2xl font-mono font-bold">{val.base + val.advances}</span>
                     {val.advances > 0 && <span className="text-[10px] text-green-600 font-bold">+{val.advances}</span>}
