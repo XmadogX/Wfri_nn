@@ -4,19 +4,8 @@ import { db } from "../lib/db";
 import type { StatName, Character } from "../types/wfrp";
 import { performTest } from "../utils/performs";
 import { WEAPON_LIBRARY } from "../data/weapons";
+import { STATS_TRANSLATE } from "../data/stats";
 
-const STATS_TRANSLATE = {
-  WS: 'Бл.бой',   // Weapon Skill
-  BS: 'Стрельба', // Ballistic Skill
-  S: 'Сила',      // Strength
-  T: 'Стойкость', // Toughness
-  I: 'Иниц.',     // Initiative
-  Ag: 'Ловк.',    // Agility
-  Dex: 'Сноровка', // Dexterity
-  Int: 'Интел.',  // Intelligence
-  WP: 'Сил.воли', // Willpower
-  Fel: 'Общит.'   // Fellowship
-};
 
 // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
 const getAdvanceCost = (current: number, isStat: boolean) => {
@@ -294,7 +283,7 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
                       <div key={i} className="flex justify-between items-center p-3 bg-white rounded-2xl border border-stone-200 hover:border-amber-400 transition-all shadow-sm group">
                         <div className="flex flex-col">
                           <span className="font-bold text-xs text-slate-700 leading-tight">{s.name}</span>
-                          <span className="text-[8px] uppercase opacity-40 font-black tracking-tighter">{s.stat}</span>
+                          <span className="text-[8px] uppercase opacity-40 font-black tracking-tighter">{STATS_TRANSLATE[s.stat] || s.stat}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="text-right leading-none mr-1">

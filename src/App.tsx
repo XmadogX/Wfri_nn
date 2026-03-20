@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from './lib/db';
 import { CharacterSheet } from './components/CharacterSheet';
 import type { Character, StatName } from './types/wfrp';
+import { STATS_TRANSLATE } from './data/stats';
 
 // Константы для создания
 const STAT_LIST: StatName[] = ['WS', 'BS', 'S', 'T', 'I', 'Ag', 'Dex', 'Int', 'WP', 'Fel'];
@@ -171,7 +172,7 @@ function App() {
               <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-2 gap-2">
                 {STAT_LIST.map(stat => (
                   <div key={stat} className="bg-white p-2 rounded-xl border border-stone-300 flex flex-col items-center shadow-sm">
-                    <span className="text-[9px] font-black text-slate-400 leading-none mb-1">{stat}</span>
+                    <span className="text-[9px] font-black text-slate-400 leading-none mb-1">{STATS_TRANSLATE[stat] || stat}</span>
                     <input type="number" className="w-full text-center font-bold text-amber-900 text-lg bg-transparent outline-none" value={manualStats[stat]} onChange={e => setManualStats({...manualStats, [stat]: parseInt(e.target.value) || 0})} />
                   </div>
                 ))}
