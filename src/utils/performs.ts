@@ -6,8 +6,11 @@ export const performTest = (
   modifier: number = 0,
   forcedRoll?: number // Добавляем этот параметр
 ) => {
+  console.log(char, statKey, modifier, forcedRoll);
+  
   const stat = char.stats[statKey];
-  const target = stat.base + stat.advances + modifier + (char.advantage * 10);
+  
+  const target = stat.base + stat.advances + modifier;
   
   // Если forcedRoll передан, используем его, иначе генерим случайное
   const roll = forcedRoll !== undefined ? forcedRoll : Math.floor(Math.random() * 100) + 1;

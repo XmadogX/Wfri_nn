@@ -3,18 +3,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "../lib/db";
 import type { StatName, Character } from "../types/wfrp";
 import { performTest } from "../utils/performs";
-
-// --- БИБЛИОТЕКИ ---
-const WEAPON_LIBRARY = [
-  { name: 'Меч (Ручное)', damage: 'SB + 4', skill: 'Рукопашная (Базовая)', traits: ['Защитное'] },
-  { name: 'Кинжал', damage: 'SB + 2', skill: 'Рукопашная (Базовая)', traits: ['Быстрое', 'Короткое'] },
-  { name: 'Топор', damage: 'SB + 4', skill: 'Рукопашная (Базовая)', traits: ['Разрушительное'] },
-  { name: 'Двуручный меч', damage: 'SB + 6', skill: 'Рукопашная (Двуручное)', traits: ['Ударное', 'Громоздкое'] },
-  { name: 'Рапира', damage: 'SB + 3', skill: 'Рукопашная (Фехтование)', traits: ['Точное'] },
-  { name: 'Лук (Обычный)', damage: 'SB + 3', skill: 'Дальнее (Лук)', traits: ['Пробивающее'] },
-  { name: 'Арбалет', damage: 'SB + 4', skill: 'Дальнее (Арбалет)', traits: ['Бронебойное'] },
-  { name: 'Мушкет', damage: 'SB + 9', skill: 'Дальнее (Пороховое)', traits: ['Бронебойное', 'Громогласное'] }
-];
+import { WEAPON_LIBRARY } from "../data/weapons";
 
 const ALL_SKILLS_LIBRARY = [
   { name: 'Атлетика', stat: 'Ag' }, { name: 'Восприятие', stat: 'I' },
@@ -77,8 +66,11 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
 
   // --- ЛОГИКА ТЕСТА ---
   const onTest = (key: string, baseStat: StatName, skillAdv: number = 0, isWeapon: boolean = false, weaponDmg: string = "0") => {
+    console.log(key, baseStat, skillAdv, isWeapon, weaponDmg);
+    
     const rollValue = manualRoll ? parseInt(manualRoll) : Math.floor(Math.random() * 100) + 1;
     const res = performTest(char, baseStat, skillAdv, rollValue);
+    console.log();
     
     let finalSl = res.sl;
     let finalTarget = res.target;
@@ -88,7 +80,6 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
       finalTarget += (advantage * 10);
       finalSl += advantage;
     }
-    console.log(sb, weaponDmg, parseInt(weaponDmg.replace(/SB\s*\+\s*/, "")) || 0, finalSl);
     
     const damage = isWeapon ? `Зона: ${getHitLocation(res.roll)} | Урон: ${(sb + (parseInt(weaponDmg.replace(/SB\s*\+\s*/, "")) || 0) + finalSl)}` : '';
 
@@ -255,7 +246,7 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
                       </div>
                       <div className="flex gap-2">
                         <button onClick={() => db.characters.update(charId, { inventory: inventory.filter(i => i.id !== w.id) })} className=" p-2 text-xs transition-opacity hover:text-red-500">🗑️</button>
-                        <button onClick={() => onTest(w.name, 'WS', 0, true, w.damage)} className="bg-red-800 text-white px-6 py-2.5 rounded-2xl font-black text-[10px] shadow-md uppercase active:scale-95 transition-transform tracking-widest border border-red-600/50">Удар</button>
+                        <button onClick={() => onTest(w.name, 'WS', skills?.find(s=> s.name === w.skill)?.advances || 0, true, w.damage)} className="bg-red-800 text-white px-6 py-2.5 rounded-2xl font-black text-[10px] shadow-md uppercase active:scale-95 transition-transform tracking-widest border border-red-600/50">Удар</button>
                       </div>
                     </div>
                   ))}
