@@ -6,14 +6,14 @@ import { performTest } from "../utils/performs";
 
 // --- БИБЛИОТЕКИ ---
 const WEAPON_LIBRARY = [
-  { name: 'Меч (Ручное)', dmg: 'SB + 4', skill: 'Рукопашная (Базовая)', traits: ['Защитное'] },
-  { name: 'Кинжал', dmg: 'SB + 2', skill: 'Рукопашная (Базовая)', traits: ['Быстрое', 'Короткое'] },
-  { name: 'Топор', dmg: 'SB + 4', skill: 'Рукопашная (Базовая)', traits: ['Разрушительное'] },
-  { name: 'Двуручный меч', dmg: 'SB + 6', skill: 'Рукопашная (Двуручное)', traits: ['Ударное', 'Громоздкое'] },
-  { name: 'Рапира', dmg: 'SB + 3', skill: 'Рукопашная (Фехтование)', traits: ['Точное'] },
-  { name: 'Лук (Обычный)', dmg: 'SB + 3', skill: 'Дальнее (Лук)', traits: ['Пробивающее'] },
-  { name: 'Арбалет', dmg: 'SB + 4', skill: 'Дальнее (Арбалет)', traits: ['Бронебойное'] },
-  { name: 'Мушкет', dmg: 'SB + 9', skill: 'Дальнее (Пороховое)', traits: ['Бронебойное', 'Громогласное'] }
+  { name: 'Меч (Ручное)', damage: 'SB + 4', skill: 'Рукопашная (Базовая)', traits: ['Защитное'] },
+  { name: 'Кинжал', damage: 'SB + 2', skill: 'Рукопашная (Базовая)', traits: ['Быстрое', 'Короткое'] },
+  { name: 'Топор', damage: 'SB + 4', skill: 'Рукопашная (Базовая)', traits: ['Разрушительное'] },
+  { name: 'Двуручный меч', damage: 'SB + 6', skill: 'Рукопашная (Двуручное)', traits: ['Ударное', 'Громоздкое'] },
+  { name: 'Рапира', damage: 'SB + 3', skill: 'Рукопашная (Фехтование)', traits: ['Точное'] },
+  { name: 'Лук (Обычный)', damage: 'SB + 3', skill: 'Дальнее (Лук)', traits: ['Пробивающее'] },
+  { name: 'Арбалет', damage: 'SB + 4', skill: 'Дальнее (Арбалет)', traits: ['Бронебойное'] },
+  { name: 'Мушкет', damage: 'SB + 9', skill: 'Дальнее (Пороховое)', traits: ['Бронебойное', 'Громогласное'] }
 ];
 
 const ALL_SKILLS_LIBRARY = [
@@ -49,7 +49,7 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
   
   const [isCombat, setIsCombat] = useState(false);
   const [manualRoll, setManualRoll] = useState("");
-  const [testResult, setTestResult] = useState<{ msg: string, detail?: string, crit?: boolean, fumble?: boolean } | null>(null);
+  const [testResult, setTestResult] = useState<{ msg: string, detail?: string, crit?: boolean, fumble?: boolean, damage: string } | null>(null);
   const [skillSearch, setSkillSearch] = useState("");
   const [showWepModal, setShowWepModal] = useState(false);
   const [wepSearch, setWepSearch] = useState("");
@@ -64,6 +64,7 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
   const conditions = char.conditions || {};
   const advantage = char.advantage || 0;
   const favoriteSkills = char.favoriteSkills || [];
+  
 
   // Расчеты
   const getBonus = (val: number) => Math.floor(val / 10);
@@ -87,21 +88,16 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
       finalTarget += (advantage * 10);
       finalSl += advantage;
     }
-
-    let detail = "";
-    if (res.isSuccess) {
-      detail = `Зона: ${getHitLocation(res.roll)}`;
-      if (isWeapon) {
-        const bonusDmg = parseInt(weaponDmg.replace(/SB\s*\+\s*/, "")) || 0;
-        detail += ` | Урон: ${sb + bonusDmg + finalSl}`;
-      }
-    }
+    console.log(sb, weaponDmg, parseInt(weaponDmg.replace(/SB\s*\+\s*/, "")) || 0, finalSl);
+    
+    const damage = isWeapon ? `Зона: ${getHitLocation(res.roll)} | Урон: ${(sb + (parseInt(weaponDmg.replace(/SB\s*\+\s*/, "")) || 0) + finalSl)}` : '';
 
     setTestResult({
       msg: `${key}: ${res.roll} vs ${finalTarget} | СУ: ${finalSl}`,
       detail: res.isCritical ? "💥 КРИТИЧЕСКИЙ УСПЕХ!" : res.isFumble ? "💀 КРИТИЧЕСКИЙ ПРОВАЛ!" : res.isSuccess ? "🟢 УСПЕХ" : "🔴 НЕУДАЧА",
       crit: res.isCritical,
-      fumble: res.isFumble
+      fumble: res.isFumble,
+      damage
     });
     setManualRoll("");
   };
@@ -252,14 +248,14 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
                     <div key={w.id} className="bg-white/5 border border-red-900/20 p-4 rounded-3xl flex justify-between items-center shadow-lg group hover:bg-white/10 transition-all">
                       <div className="flex flex-col">
                         <span className="font-bold text-sm text-red-50 italic underline leading-none">{w.name}</span>
-                        <span className="text-[10px] text-red-400 font-bold uppercase mt-1.5 tracking-tighter">Урон: {w.dmg}</span>
+                        <span className="text-[10px] text-red-400 font-bold uppercase mt-1.5 tracking-tighter">Урон: {w.damage}</span>
                         <div className="flex gap-1 mt-1">
                           {w.traits?.map((t: string) => <span key={t} className="text-[7px] bg-red-900/40 text-red-200 px-1.5 py-0.5 rounded uppercase font-black">{t}</span>)}
                         </div>
                       </div>
                       <div className="flex gap-2">
                         <button onClick={() => db.characters.update(charId, { inventory: inventory.filter(i => i.id !== w.id) })} className=" p-2 text-xs transition-opacity hover:text-red-500">🗑️</button>
-                        <button onClick={() => onTest(w.name, 'WS', 0, true, w.dmg)} className="bg-red-800 text-white px-6 py-2.5 rounded-2xl font-black text-[10px] shadow-md uppercase active:scale-95 transition-transform tracking-widest border border-red-600/50">Удар</button>
+                        <button onClick={() => onTest(w.name, 'WS', 0, true, w.damage)} className="bg-red-800 text-white px-6 py-2.5 rounded-2xl font-black text-[10px] shadow-md uppercase active:scale-95 transition-transform tracking-widest border border-red-600/50">Удар</button>
                       </div>
                     </div>
                   ))}
@@ -354,6 +350,7 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
             >
               <div className="text-[11px] font-black uppercase tracking-widest mb-1 leading-tight">{testResult.msg}</div>
               <div className="text-black text-[10px] font-black mt-1 bg-white/20 rounded-lg py-1 shadow-inner uppercase tracking-wider">{testResult.detail}</div>
+              {testResult.damage && <div className="text-[11px] font-black uppercase tracking-widest mb-1 leading-tight">{testResult.damage}</div>}
               <div className="text-[8px] mt-2 opacity-50 uppercase font-black italic tracking-widest">Закрыть</div>
             </div>
           )}
@@ -401,7 +398,7 @@ export const CharacterSheet = ({ charId }: { charId: number }) => {
                 }} className="w-full text-left p-4 bg-white border border-stone-200 rounded-2xl hover:border-red-500 active:bg-red-50 transition-all flex justify-between items-center group">
                   <div className="flex flex-col">
                     <span className="font-bold text-sm leading-tight text-slate-800 group-hover:text-red-700 transition-colors">{w.name}</span>
-                    <span className="text-[10px] text-red-600 font-bold uppercase mt-1 tracking-widest">{w.dmg}</span>
+                    <span className="text-[10px] text-red-600 font-bold uppercase mt-1 tracking-widest">{w.damage}</span>
                   </div>
                   <span className="text-xl opacity-20 group-hover:opacity-100 transition-all">➕</span>
                 </button>
