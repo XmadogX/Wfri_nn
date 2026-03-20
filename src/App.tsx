@@ -7,13 +7,60 @@ import type { Character, StatName } from './types/wfrp';
 // Константы для создания
 const STAT_LIST: StatName[] = ['WS', 'BS', 'S', 'T', 'I', 'Ag', 'Dex', 'Int', 'WP', 'Fel'];
 const INITIAL_SKILLS = [
-  { name: 'Атлетика', stat: 'Ag', advances: 0 },
-  { name: 'Восприятие', stat: 'I', advances: 0 },
-  { name: 'Уклонение', stat: 'Ag', advances: 0 },
-  { name: 'Стойкость', stat: 'T', advances: 0 },
-  { name: 'Хладнокровие', stat: 'WP', advances: 0 },
-  { name: 'Рукопашная (Базовая)', stat: 'WS', advances: 0 }
-];
+  { "name": "Азартные игры", "stat": "Int", "advances": 0 },
+  { "name": "Атлетика", "stat": "Ag", "advances": 0 },
+  { "name": "Ближний бой (Базовый)", "stat": "WS", "advances": 0 },
+  { "name": "Верховая езда", "stat": "Ag", "advances": 0 },
+  { "name": "Вождение", "stat": "Ag", "advances": 0 },
+  { "name": "Восприятие", "stat": "I", "advances": 0 },
+  { "name": "Выживание", "stat": "Int", "advances": 0 },
+  { "name": "Гребля", "stat": "S", "advances": 0 },
+  { "name": "Запугивание", "stat": "S", "advances": 0 },
+  { "name": "Интуиция", "stat": "I", "advances": 0 },
+  { "name": "Кутеж", "stat": "T", "advances": 0 },
+  { "name": "Лазание", "stat": "S", "advances": 0 },
+  { "name": "Лидерство", "stat": "Fel", "advances": 0 },
+  { "name": "Навигация", "stat": "I", "advances": 0 },
+  { "name": "Обаяние", "stat": "Fel", "advances": 0 },
+  { "name": "Обман", "stat": "Fel", "advances": 0 },
+  { "name": "Плавание", "stat": "S", "advances": 0 },
+  { "name": "Подкуп", "stat": "Fel", "advances": 0 },
+  { "name": "Развлечение", "stat": "Fel", "advances": 0 },
+  { "name": "Скрытность", "stat": "Ag", "advances": 0 },
+  { "name": "Торговля", "stat": "Fel", "advances": 0 },
+  { "name": "Уворот", "stat": "Ag", "advances": 0 },
+  { "name": "Уклонение", "stat": "WP", "advances": 0 },
+  { "name": "Усмирение животных", "stat": "Int", "advances": 0 },
+  { "name": "Хладнокровие", "stat": "T", "advances": 0 },
+]
+
+const ADVANCED_SKILLS = [
+  { "name": "Артистизм", "stat": "Dex", "advances": 0 },
+  { "name": "Взлом", "stat": "Dex", "advances": 0 },
+  { "name": "Дрессировка", "stat": "Int", "advances": 0 },
+  { "name": "Знание (группа)", "stat": "Int", "advances": 0 },
+  { "name": "Искусство (группа)", "stat": "Dex", "advances": 0 },
+  { "name": "Исцеление", "stat": "Int", "advances": 0 },
+  { "name": "Ловкость рук", "stat": "Dex", "advances": 0 },
+  { "name": "Молитва", "stat": "Fel", "advances": 0 },
+  { "name": "Морское дело", "stat": "Ag", "advances": 0 },
+  { "name": "Настройка", "stat": "WP", "advances": 0 },
+  { "name": "Ориентирование", "stat": "I", "advances": 0 },
+  { "name": "Оценка", "stat": "Int", "advances": 0 },
+  { "name": "Плавание (парус)", "stat": "Ag", "advances": 0 },
+  { "name": "Постановка ловушек", "stat": "Dex", "advances": 0 },
+  { "name": "Ремесло (группа)", "stat": "Dex", "advances": 0 },
+  { "name": "Следопыт", "stat": "I", "advances": 0 },
+  { "name": "Стрельба (группа)", "stat": "BS", "advances": 0 },
+  { "name": "Тайный знак (группа)", "stat": "Int", "advances": 0 },
+  { "name": "Торговля (группа)", "stat": "Int", "advances": 0 },
+  { "name": "Фокусы", "stat": "Dex", "advances": 0 },
+  { "name": "Химия", "stat": "Int", "advances": 0 },
+  { "name": "Язык (группа)", "stat": "Int", "advances": 0 },
+  { "name": "Язык магии", "stat": "Int", "advances": 0 }
+]
+
+
 const STARTER_CAREERS = [
   { id: 'rat_catcher', name: 'Крысолов' },
   { id: 'slayer', name: 'Убийца' },

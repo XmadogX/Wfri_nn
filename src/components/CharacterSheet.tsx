@@ -5,12 +5,6 @@ import type { StatName, Character } from "../types/wfrp";
 import { performTest } from "../utils/performs";
 import { WEAPON_LIBRARY } from "../data/weapons";
 
-const ALL_SKILLS_LIBRARY = [
-  { name: 'Атлетика', stat: 'Ag' }, { name: 'Восприятие', stat: 'I' },
-  { name: 'Уклонение', stat: 'Ag' }, { name: 'Хладнокровие', stat: 'WP' },
-  { name: 'Стойкость', stat: 'T' }, { name: 'Рукопашная (Базовая)', stat: 'WS' }
-];
-
 const STATS_TRANSLATE = {
   WS: 'Бл.бой',   // Weapon Skill
   BS: 'Стрельба', // Ballistic Skill
